@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@hashgraph/sdk': ^2.62.0
+
 importers:
 
   .:
@@ -12,8 +15,8 @@ importers:
         specifier: 0.25.6-alpha.1
         version: 0.25.6-alpha.1(@google-cloud/vertexai@1.9.3)(@langchain/core@0.3.43(openai@4.82.0(ws@8.18.0)(zod@3.24.2)))(axios@1.8.4)(react@19.1.0)(ws@8.18.0)(zod@3.24.2)
       '@hashgraph/sdk':
-        specifier: ^2.56.0
-        version: 2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
+        specifier: ^2.62.0
+        version: 2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       '@hashgraphonline/standards-sdk':
         specifier: ^0.0.74
         version: 0.0.74(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0)(typescript@5.8.2)
@@ -24,8 +27,8 @@ importers:
         specifier: ^16.4.7
         version: 16.4.7
       hedera-agent-kit:
-        specifier: 1.0.6
-        version: 1.0.6(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(openai@4.82.0(ws@8.18.0)(zod@3.24.2))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0)(ws@8.18.0)(zod-to-json-schema@3.24.5(zod@3.24.2))
+        specifier: 1.0.5
+        version: 1.0.5(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(openai@4.82.0(ws@8.18.0)(zod@3.24.2))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0)(ws@8.18.0)(zod-to-json-schema@3.24.5(zod@3.24.2))
       tsup:
         specifier: 8.3.5
         version: 8.3.5(postcss@8.5.3)(typescript@5.8.2)(yaml@2.7.1)
@@ -1546,8 +1549,8 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
-  '@hashgraph/cryptography@1.5.0-beta.5':
-    resolution: {integrity: sha512-mXJqGGEJNZGKg2uRLZBjtt7ubDBRRweuVFhSBbfFbPyKlDrpm3h9GO9XyV3tFaYnfUaq5+tv5jXAqDWc2M6eTQ==}
+  '@hashgraph/cryptography@1.5.0':
+    resolution: {integrity: sha512-cv1SOl0eD/uzXHGqko71BpQkjgEQTygV+k7+nrxRnKI7oNDR0sXEpWrYhCgg8bscVDF6WAqvOCPz9FNukcK6rw==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       expo: '>=50.0.0'
@@ -1559,7 +1562,7 @@ packages:
   '@hashgraph/hedera-wallet-connect@1.4.2':
     resolution: {integrity: sha512-ksvhKLtOkIJBDwZlTQOVyOhvUjE54JZm7gYnzKMO2I/LLx/uDykmytuVe10HMQnBid3nzvJ01NUU4hmyu7rfHQ==}
     peerDependencies:
-      '@hashgraph/sdk': ^2.40.0
+      '@hashgraph/sdk': ^2.62.0
       '@walletconnect/qrcode-modal': ^1.8.0
       '@walletconnect/types': ^2.17.0
       '@walletconnect/utils': ^2.17.0
@@ -1568,7 +1571,7 @@ packages:
   '@hashgraph/hedera-wallet-connect@1.5.1':
     resolution: {integrity: sha512-mIEoAXxq5k5ImsBD0R1ayIQK9ty7sGQyQyhPThTX6rD4VOmM6WQciJbhQ6bEYzWkvT9b/bTaYB4WRjp5iPUduQ==}
     peerDependencies:
-      '@hashgraph/sdk': ^2.61.0
+      '@hashgraph/sdk': ^2.62.0
       '@walletconnect/qrcode-modal': ^1.8.0
       '@walletconnect/types': ^2.19.1
       '@walletconnect/utils': ^2.19.1
@@ -1582,8 +1585,8 @@ packages:
     resolution: {integrity: sha512-WPML6aXHkp6hD/wUz0WJyDBGUMgBHpH+eBVRqfU3BiP9de7HkmDHA0YB2IbPDv/29DMxiLi0O65+o7XXIKAb2g==}
     engines: {node: '>=10.0.0'}
 
-  '@hashgraph/sdk@2.61.0':
-    resolution: {integrity: sha512-VCEtdBe0PH3aQL/xhUZYnFfq8VElkjyRwNlYz3Z0BoHOYRRX7CWii/0WdhOZEqRfb9W7eh5Mjtm23lbrhmXmnA==}
+  '@hashgraph/sdk@2.62.0':
+    resolution: {integrity: sha512-hfK9g1AnA9HCFdSYocYQFOvVnVWzj/RfO1fZgV792Hvu47myxlmZAfXSqBiRYUvW2uX0Ky+VXHtqKofYDh2I3g==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       bn.js: ^5.2.1
@@ -3858,8 +3861,8 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  hedera-agent-kit@1.0.6:
-    resolution: {integrity: sha512-FlPzuE+5L/gye/mhPo7WZ+vJfyrzPc9UJ2FzMEYbM2ten613jkQCmNSs42lX9w9Uu4nuUd7aO+n5tZUiDsHoZA==}
+  hedera-agent-kit@1.0.5:
+    resolution: {integrity: sha512-E9fAF0a4+r/a/vY0QyPASSSB8oX1XnZgGcgf8s8ZaEOloNjbJmzNx+MoGT+OGHiXLymGYwoFlwgj+0QIdZdVGA==}
 
   help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
@@ -8442,7 +8445,7 @@ snapshots:
       protobufjs: 7.2.5
       yargs: 17.7.2
 
-  '@hashgraph/cryptography@1.5.0-beta.5(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))':
+  '@hashgraph/cryptography@1.5.0(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))':
     dependencies:
       asn1js: 3.0.6
       bignumber.js: 9.1.2
@@ -8460,17 +8463,17 @@ snapshots:
     transitivePeerDependencies:
       - react-native
 
-  '@hashgraph/hedera-wallet-connect@1.4.2(@hashgraph/sdk@2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))':
+  '@hashgraph/hedera-wallet-connect@1.4.2(@hashgraph/sdk@2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))':
     dependencies:
-      '@hashgraph/sdk': 2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
+      '@hashgraph/sdk': 2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       '@walletconnect/qrcode-modal': 1.8.0
       '@walletconnect/types': 2.20.0(ioredis@5.6.1)
       '@walletconnect/utils': 2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2)
       '@walletconnect/web3wallet': 1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2)
 
-  '@hashgraph/hedera-wallet-connect@1.5.1(@hashgraph/sdk@2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))':
+  '@hashgraph/hedera-wallet-connect@1.5.1(@hashgraph/sdk@2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))':
     dependencies:
-      '@hashgraph/sdk': 2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
+      '@hashgraph/sdk': 2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       '@walletconnect/qrcode-modal': 1.8.0
       '@walletconnect/types': 2.20.0(ioredis@5.6.1)
       '@walletconnect/utils': 2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2)
@@ -8486,14 +8489,14 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.2.5
 
-  '@hashgraph/sdk@2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))':
+  '@hashgraph/sdk@2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))':
     dependencies:
       '@ethersproject/abi': 5.8.0
       '@ethersproject/bignumber': 5.8.0
       '@ethersproject/bytes': 5.8.0
       '@ethersproject/rlp': 5.8.0
       '@grpc/grpc-js': 1.13.2
-      '@hashgraph/cryptography': 1.5.0-beta.5(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
+      '@hashgraph/cryptography': 1.5.0(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       '@hashgraph/proto': 2.17.0-beta.1
       bignumber.js: 9.1.2
       bn.js: 5.2.1
@@ -8512,9 +8515,9 @@ snapshots:
 
   '@hashgraphonline/hashinal-wc@1.0.96(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(ioredis@5.6.1)(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0)(typescript@5.8.2)(zod@3.24.2)':
     dependencies:
-      '@hashgraph/hedera-wallet-connect': 1.4.2(@hashgraph/sdk@2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))
+      '@hashgraph/hedera-wallet-connect': 1.4.2(@hashgraph/sdk@2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))
       '@hashgraph/proto': 2.16.0
-      '@hashgraph/sdk': 2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
+      '@hashgraph/sdk': 2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       '@walletconnect/core': 2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2)
       '@walletconnect/modal': 2.7.0(react@19.1.0)
       '@walletconnect/modal-core': 2.7.0(react@19.1.0)
@@ -8556,9 +8559,9 @@ snapshots:
 
   '@hashgraphonline/standards-sdk@0.0.74(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0)(typescript@5.8.2)':
     dependencies:
-      '@hashgraph/hedera-wallet-connect': 1.5.1(@hashgraph/sdk@2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))
+      '@hashgraph/hedera-wallet-connect': 1.5.1(@hashgraph/sdk@2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))
       '@hashgraph/proto': 2.16.0
-      '@hashgraph/sdk': 2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
+      '@hashgraph/sdk': 2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       '@hashgraphonline/hashinal-wc': 1.0.96(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(ioredis@5.6.1)(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0)(typescript@5.8.2)(zod@3.24.2)
       '@kiloscribe/inscription-sdk': 1.0.27(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       dotenv: 16.4.7
@@ -8718,8 +8721,8 @@ snapshots:
 
   '@kiloscribe/inscription-sdk@1.0.27(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))':
     dependencies:
-      '@hashgraph/hedera-wallet-connect': 1.5.1(@hashgraph/sdk@2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))
-      '@hashgraph/sdk': 2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
+      '@hashgraph/hedera-wallet-connect': 1.5.1(@hashgraph/sdk@2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0)))(@walletconnect/qrcode-modal@1.8.0)(@walletconnect/types@2.20.0(ioredis@5.6.1))(@walletconnect/utils@2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))(@walletconnect/web3wallet@1.16.1(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2))
+      '@hashgraph/sdk': 2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       axios: 1.8.4
       file-type: 18.7.0
       mime-types: 2.1.35
@@ -9838,7 +9841,7 @@ snapshots:
       '@ethersproject/transactions': 5.8.0
       '@stablelib/random': 1.0.2
       '@stablelib/sha256': 1.0.1
-      '@walletconnect/core': 2.17.1(ioredis@5.6.1)
+      '@walletconnect/core': 2.20.0(ioredis@5.6.1)(typescript@5.8.2)(zod@3.24.2)
       '@walletconnect/events': 1.0.1
       '@walletconnect/heartbeat': 1.2.2
       '@walletconnect/jsonrpc-utils': 1.0.8
@@ -11763,9 +11766,9 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hedera-agent-kit@1.0.6(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(openai@4.82.0(ws@8.18.0)(zod@3.24.2))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0)(ws@8.18.0)(zod-to-json-schema@3.24.5(zod@3.24.2)):
+  hedera-agent-kit@1.0.5(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(openai@4.82.0(ws@8.18.0)(zod@3.24.2))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0)(ws@8.18.0)(zod-to-json-schema@3.24.5(zod@3.24.2)):
     dependencies:
-      '@hashgraph/sdk': 2.61.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
+      '@hashgraph/sdk': 2.62.0(bn.js@5.2.1)(expo@52.0.41(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))(react@19.1.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(react@19.1.0))
       '@langchain/core': 0.3.43(openai@4.82.0(ws@8.18.0)(zod@3.24.2))
       '@langchain/langgraph': 0.2.62(@langchain/core@0.3.43(openai@4.82.0(ws@8.18.0)(zod@3.24.2)))(react@19.1.0)(zod-to-json-schema@3.24.5(zod@3.24.2))
       '@langchain/openai': 0.3.17(@langchain/core@0.3.43(openai@4.82.0(ws@8.18.0)(zod@3.24.2)))(ws@8.18.0)

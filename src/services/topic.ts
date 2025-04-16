@@ -8,11 +8,15 @@ import {
     getEmbeddingZeroVector,
     type Content,
     type Memory,
+    generateMessageResponse,
+    ModelClass,
+    composeContext,
 } from "@elizaos/core";
 // @ts-ignore
 import { EventEmitter } from "events";
 // @ts-ignore
 import { HCS10Client, HCSMessage, Logger } from '@hashgraphonline/standards-sdk'; // Adjusted relative path
+import { hederaHBARTransferTemplate } from "../templates";
 
 // Placeholder for utility function if needed, or assume it's globally available/imported elsewhere
 // const extractAccountId = (operatorId: string): string | null => { /* ... implementation ... */ return null; };
@@ -719,6 +723,13 @@ class TopicClient extends EventEmitter {
                 agentName: this.runtime.character?.name || 'Hedera Agent',
             });
 
+            const context = composeContext({
+                state,
+                template: hederaHBARTransferTemplate
+            });
+
+            elizaLogger.info("context", context);
+
             // Determine if we should respond
             // We could add conditions here, but for now we'll always respond
             const shouldRespond = true;
@@ -727,7 +738,7 @@ class TopicClient extends EventEmitter {
                 logger.info(`Generating response for message #${message.sequence_number} on topic ${connectionTopicId}`);
 
                 // Generate response using the runtime
-                const responseContent = await this._generateResponse(memory, state);
+                const responseContent = await this._generateResponse(memory, state, context);
 
                 // Set reference to the original message
                 responseContent.inReplyTo = messageId;
@@ -791,10 +802,17 @@ class TopicClient extends EventEmitter {
     /**
      * Generate a response to the user's message
      */
-    private async _generateResponse(memory: Memory, state: any): Promise<Content> {
+    private async _generateResponse(memory: Memory, state: any, context: string): Promise<Content> {
         try {
+
             // Use the runtime's response generation approach
-            const response = await this.runtime.generateReply(memory, state);
+            const response = await generateMessageResponse({
+                runtime: this.runtime,
+                context: memory.content.text,
+                modelClass: ModelClass.LARGE,
+            });
+
+            elizaLogger.info("response", response);
 
             // If the runtime handles this differently, adjust accordingly
             return response;

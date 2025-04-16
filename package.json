@@ -6,11 +6,11 @@
     "types": "dist/index.d.ts",
     "dependencies": {
         "@elizaos/core": "0.25.6-alpha.1",
-        "@hashgraph/sdk": "^2.56.0",
+        "@hashgraph/sdk": "^2.62.0",
         "@hashgraphonline/standards-sdk": "^0.0.74",
         "bignumber.js": "^9.1.2",
         "dotenv": "^16.4.7",
-        "hedera-agent-kit": "1.0.6",
+        "hedera-agent-kit": "1.0.5",
         "tsup": "8.3.5",
         "zod": "^3.24.2"
     },
@@ -19,6 +19,9 @@
         "dev": "tsup --format esm --dts --watch",
         "postinstall": "pnpm run build",
         "test": "vitest run"
+    },
+    "resolutions": {
+        "@hashgraph/sdk": "^2.62.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.20.0",
