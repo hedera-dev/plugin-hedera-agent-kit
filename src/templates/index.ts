@@ -1,3 +1,5 @@
+import { messageCompletionFooter } from "@elizaos/core";
+
 export const hederaHBARTransferTemplate = `Given the last message:
 {{lastMessage}}
 Extract the following information about the requested HBAR transfer:
@@ -44,17 +46,17 @@ Extract the following information about the token to create on hedera blockchain
 
 5. **Is Supply Key**:
    - Boolean - true or false.
-   - **Set to true only if** the user explicitly instructs “set the supply key” or similar phrasing.
+   - **Set to true only if** the user explicitly instructs "set the supply key" or similar phrasing.
    - If there is no explicit instruction or the user explicitly states not to set it, set this to false.
    
 6. **Is Metadata Key**:
    - Boolean - true or false.
-   - **Set to true only if** the user explicitly instructs “set the metadata key” or similar phrasing.
+   - **Set to true only if** the user explicitly instructs "set the metadata key" or similar phrasing.
    - Otherwise, even if token metadata is provided, set to false.
    
 7. **Is Admin Key**:
    - Boolean - true or false.
-   - **Set to true only if** the user explicitly instructs “set the admin key” or similar phrasing.
+   - **Set to true only if** the user explicitly instructs "set the admin key" or similar phrasing.
    - Otherwise, set to false.
    
 8. **Token Metadata**:
@@ -243,7 +245,7 @@ Example response for the input: "Launch NFT token called MoonNFT with symbol MOO
 - **String** for \`name\`, \`symbol\`, \`tokenMetadata\`, and \`memo\`.
 - **Number** for \`maxSupply\`.
 - **Boolean** (\`true\` or \`false\`) for \`isMetadataKey\` and \`isAdminKey\`.
-- **Null** where no value is provided or if it’s explicitly stated.
+- **Null** where no value is provided or if it's explicitly stated.
 
 Now respond with a JSON markdown block containing only the extracted values.
 `;
@@ -997,6 +999,7 @@ Example response for the input: "Set spending approval for an account 0.0.123456
 
 Now respond with a JSON markdown block containing only the extracted values.
 `;
+
 export const mintNFTTokenTemplate = `Given the last message:
 {{lastMessage}}
 
@@ -1035,3 +1038,27 @@ Example response for the input: "Mint new NFT token. Set it's metadata to 'https
 
 Now respond with a JSON markdown block containing only the extracted values.
 `;
+
+export const hederaMessageHandlerTemplate = `
+# Task: Generate dialog and actions for the character {{agentName}} interacting via Hedera Consensus Service.
+
+# About {{agentName}}:
+{{bio}}
+{{lore}}
+Your Hedera Account ID: {{agentId}}
+You are communicating with user {{userName}} ({{userId}}) on topic {{connectionTopicId}}.
+
+# Examples of {{agentName}}'s dialog and actions:
+{{characterMessageExamples}}
+
+# Capabilities
+Note that {{agentName}} can process text messages. It can also interact with Hedera-specific actions.
+
+# Actions Available
+{{actions}}
+
+# Recent Message History (newest first):
+{{recentMessages}}
+
+# Instructions: Write the next message for {{agentName}} based on the recent history and the latest message ("{{lastMessage}}"). Include an action, if appropriate. {{actionNames}}
+` + messageCompletionFooter;

@@ -16,7 +16,7 @@ import {
 import { EventEmitter } from "events";
 // @ts-ignore
 import { HCS10Client, HCSMessage, Logger } from '@hashgraphonline/standards-sdk'; // Adjusted relative path
-import { hederaHBARTransferTemplate } from "../templates";
+import { hederaMessageHandlerTemplate } from '../templates'; // Import the new template
 
 // Placeholder for utility function if needed, or assume it's globally available/imported elsewhere
 // const extractAccountId = (operatorId: string): string | null => { /* ... implementation ... */ return null; };
@@ -707,38 +707,38 @@ class TopicClient extends EventEmitter {
             await this.runtime.messageManager.addEmbeddingToMemory(memory);
             await this.runtime.messageManager.createMemory(memory);
 
-            // Compose state with any Hedera-specific context
-            const userMessage = {
-                content,
-                userId: userIdUUID,
-                agentId: this.runtime.agentId,
-                roomId,
-            };
-
             // Compose state with additional context
-            const state = await this.runtime.composeState(userMessage, {
+            const state = await this.runtime.composeState(memory, {
                 hederaClient: this.client,
                 hederaMessage: message,
                 connectionTopicId,
                 agentName: this.runtime.character?.name || 'Hedera Agent',
+                userName: userName, // Add userName to state for template
+                userId: userIdUUID, // Add userId to state for template
+                agentId: this.runtime.agentId, // Add agentId to state for template
             });
 
+            // Use the correct template for composing general context
             const context = composeContext({
                 state,
-                template: hederaHBARTransferTemplate
+                template: hederaMessageHandlerTemplate // Use the general message handler template
             });
 
-            elizaLogger.info("context", context);
+            // Log the composed context before generating response
+            logger.debug(`Composed context for message #${message.sequence_number}:`, context);
 
             // Determine if we should respond
             // We could add conditions here, but for now we'll always respond
             const shouldRespond = true;
+            logger.debug(`Decision to respond for message #${message.sequence_number}: ${shouldRespond}`);
 
             if (shouldRespond) {
                 logger.info(`Generating response for message #${message.sequence_number} on topic ${connectionTopicId}`);
 
-                // Generate response using the runtime
-                const responseContent = await this._generateResponse(memory, state, context);
+                // Generate response using the runtime, passing the composed context
+                const responseContent = await this._generateResponse(memory, state, context); // Pass context here
+
+                logger.debug(`Generated response content for message #${message.sequence_number}:`, responseContent);
 
                 // Set reference to the original message
                 responseContent.inReplyTo = messageId;
@@ -802,17 +802,19 @@ class TopicClient extends EventEmitter {
     /**
      * Generate a response to the user's message
      */
-    private async _generateResponse(memory: Memory, state: any, context: string): Promise<Content> {
+    private async _generateResponse(memory: Memory, state: any, context: string): Promise<Content> { // Accept context as parameter
         try {
+            // Log the context being passed to the LLM
+            logger.debug('Context passed to generateMessageResponse:', context);
 
-            // Use the runtime's response generation approach
+            // Use the runtime's response generation approach, passing the full context
             const response = await generateMessageResponse({
                 runtime: this.runtime,
-                context: memory.content.text,
+                context: context, // Pass the composed context here
                 modelClass: ModelClass.LARGE,
             });
 
-            elizaLogger.info("response", response);
+            logger.debug("Raw response from LLM:", response);
 
             // If the runtime handles this differently, adjust accordingly
             return response;
@@ -855,6 +857,20 @@ class TopicClient extends EventEmitter {
 
 // --- Eliza Client Interface Export ---
 export const TopicClientInterface: ElizaClient = {
-    name: 'hedera', // Name for this client interface
+    // Remove the name property as indicated by the linter
+    // name: 'hedera',
     start: async (runtime: IAgentRuntime) => new TopicClient(runtime),
+    // Add stop method matching the required signature
+    stop: async (runtime: IAgentRuntime): Promise<void> => {
+        // This function signature matches the type requirement.
+        // The actual stop logic is in the TopicClient instance method.
+        // We might need to find the instance via runtime if direct access isn't possible,
+        // but for type checking, this signature should suffice.
+        // Placeholder implementation:
+        elizaLogger.info("TopicClientInterface stop called via runtime - instance stop should be handled elsewhere.");
+        // If runtime provides a way to get the client instance, call its stop method:
+        // const client = runtime.getClient('hedera'); // Hypothetical method
+        // if (client) await client.stop();
+        return Promise.resolve();
+    },
 }; 
