@@ -250,7 +250,6 @@ Example response for the input: "Launch NFT token called MoonNFT with symbol MOO
 Now respond with a JSON markdown block containing only the extracted values.
 `;
 
-
 export const hederaAirdropTokenTemplate = `Given the last message:
 {{lastMessage}}
 
@@ -1039,7 +1038,8 @@ Example response for the input: "Mint new NFT token. Set it's metadata to 'https
 Now respond with a JSON markdown block containing only the extracted values.
 `;
 
-export const hederaMessageHandlerTemplate = `
+export const hederaMessageHandlerTemplate =
+    `
 # Task: Generate dialog and actions for the character {{agentName}} interacting via Hedera Consensus Service.
 
 # About {{agentName}}:
@@ -1062,3 +1062,68 @@ Note that {{agentName}} can process text messages. It can also interact with Hed
 
 # Instructions: Write the next message for {{agentName}} based on the recent history and the latest message ("{{lastMessage}}"). Include an action, if appropriate. {{actionNames}}
 ` + messageCompletionFooter;
+
+export const retrieveProfileTemplate = `
+The user is trying to retrieve a profile with the message: "{{lastMessage}}"
+
+Extract parameters for retrieving an HCS-11 profile.
+- If they mention a specific account ID, extract it as 'accountId' (e.g., "0.0.12345")
+- If they mention disabling cache, extract it as 'disableCache' (boolean)
+
+The HCS-11 standard includes these profile types:
+- Personal profiles (type=0) - Not officially supported yet
+- AI agent profiles (type=1) - Fully supported
+
+AI agent profiles include these key fields:
+- displayName: Display name for the profile (may also be returned as display_name)
+- alias: Alternative identifier
+- bio: Brief description
+- inboundTopicId: HCS-10 inbound communication topic (may also be returned as inbound_topic_id)
+- outboundTopicId: HCS-10 action record topic (may also be returned as outbound_topic_id)
+- aiAgent.type: AI agent type (0=manual, 1=autonomous) (may also be returned as ai_agent)
+- aiAgent.capabilities: List of capability enums
+- aiAgent.model: AI model identifier
+- aiAgent.creator: Creator of this Agent
+- properties: Additional custom properties as key-value pairs
+
+IMPORTANT: Respond ONLY with a JSON object containing extracted parameters.
+Example response: { "accountId": "0.0.12345" }
+Example response: { "disableCache": true }
+Example response: { "accountId": "0.0.12345", "disableCache": true }
+Example response: {}
+`;
+
+export const findRegistrationsTemplate = `
+The user is trying to find agents with the message: "{{lastMessage}}"
+
+Extract parameters for searching agent registrations.
+- If they mention a specific account ID, extract it as 'accountId'
+- If they mention a capability like TEXT_GENERATION, extract the corresponding AIAgentCapability enum value as 'tags'
+
+Complete AIAgentCapability enum:
+TEXT_GENERATION = 0
+IMAGE_GENERATION = 1
+AUDIO_GENERATION = 2
+VIDEO_GENERATION = 3
+CODE_GENERATION = 4
+LANGUAGE_TRANSLATION = 5
+SUMMARIZATION_EXTRACTION = 6
+KNOWLEDGE_RETRIEVAL = 7
+DATA_INTEGRATION = 8
+MARKET_INTELLIGENCE = 9
+TRANSACTION_ANALYTICS = 10
+SMART_CONTRACT_AUDIT = 11
+GOVERNANCE_FACILITATION = 12
+SECURITY_MONITORING = 13
+COMPLIANCE_ANALYSIS = 14
+FRAUD_DETECTION = 15
+MULTI_AGENT_COORDINATION = 16
+API_INTEGRATION = 17
+WORKFLOW_AUTOMATION = 18
+
+IMPORTANT: Respond ONLY with a JSON object containing extracted parameters.
+Example response: { "accountId": "0.0.12345" }
+Example response: { "tags": [0] }
+Example response: { "tags": [0, 4] }
+Example response: {}
+`;
