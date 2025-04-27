@@ -100,21 +100,21 @@ export const retrieveProfileAction: Action = {
 
             let responseText = `Retrieved profile for account ${targetAccountId}:\n\n`;
 
-            const displayName =
-                typeof profile.displayName === "string"
-                    ? profile.displayName
-                    : typeof profile.display_name === "string"
-                      ? profile.display_name
-                      : "N/A";
+            let displayName = "N/A";
+            if (typeof profile.displayName === "string") {
+                displayName = profile.displayName;
+            } else if (typeof profile.display_name === "string") {
+                displayName = profile.display_name;
+            }
 
-            const profileType =
-                profile.type === 1
-                    ? "AI Agent"
-                    : profile.type === 0
-                      ? "Personal"
-                      : typeof profile.type !== "undefined"
-                        ? String(profile.type)
-                        : "N/A";
+            let profileType = "N/A";
+            if (profile.type === 1) {
+                profileType = "AI Agent";
+            } else if (profile.type === 0) {
+                profileType = "Personal";
+            } else if (typeof profile.type !== "undefined") {
+                profileType = String(profile.type);
+            }
 
             responseText += `Display Name: ${displayName}\n`;
             responseText += `Type: ${profileType}\n`;
@@ -137,14 +137,14 @@ export const retrieveProfileAction: Action = {
             if (aiAgent) {
                 responseText += `\nAI Agent:\n`;
 
-                const agentType =
-                    aiAgent.type === 0
-                        ? "Manual"
-                        : aiAgent.type === 1
-                          ? "Autonomous"
-                          : typeof aiAgent.type !== "undefined"
-                            ? String(aiAgent.type)
-                            : "N/A";
+                let agentType = "N/A";
+                if (aiAgent.type === 0) {
+                    agentType = "Manual";
+                } else if (aiAgent.type === 1) {
+                    agentType = "Autonomous";
+                } else if (typeof aiAgent.type !== "undefined") {
+                    agentType = String(aiAgent.type);
+                }
 
                 responseText += `  Type: ${agentType}\n`;
                 responseText += `  Model: ${aiAgent.model || "N/A"}\n`;

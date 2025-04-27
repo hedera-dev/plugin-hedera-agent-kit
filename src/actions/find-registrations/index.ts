@@ -14,8 +14,10 @@ import {
     HCS10Client,
     NetworkType,
     AIAgentCapability,
+    AIAgentProfile,
 } from "@hashgraphonline/standards-sdk";
 import { findRegistrationsTemplate } from "../../templates";
+
 /**
  * Action to search for HCS-10 agent registrations using the configured registry.
  */
@@ -213,20 +215,9 @@ export const findRegistrationsAction: Action = {
     ],
 };
 
-// Helper function to process capabilities from metadata
-function processCapabilities(metadata: any): string[] {
+function processCapabilities(metadata: AIAgentProfile): string[] {
     if (metadata.aiAgent && Array.isArray(metadata.aiAgent.capabilities)) {
-        return metadata.aiAgent.capabilities.map((cap: any) => {
-            const enumValue = Number(cap);
-            if (enumValue in AIAgentCapability) {
-                return `${AIAgentCapability[enumValue]} (${enumValue})`;
-            }
-            return `Capability ${cap}`;
-        });
-    }
-
-    if (metadata.ai_agent && Array.isArray(metadata.ai_agent.capabilities)) {
-        return metadata.ai_agent.capabilities.map((cap: any) => {
+        return metadata.aiAgent.capabilities.map((cap) => {
             const enumValue = Number(cap);
             if (enumValue in AIAgentCapability) {
                 return `${AIAgentCapability[enumValue]} (${enumValue})`;
