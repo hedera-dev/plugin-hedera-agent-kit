@@ -22,12 +22,16 @@ import { mintTokenAction } from "./actions/mint-token/mint-token.ts";
 import { setSpendingApprovalAction } from "./actions/set-spending-approval/set-spending-approval.ts";
 import { createNFTTokenAction } from "./actions/create-nft-token/create-nft-token.ts";
 import { mintNFTTokenAction } from "./actions/mint-nft-token/mint-token.ts";
+import { OpenConvaiClientInterface } from "./services/open-convai.ts";
+import { findRegistrationsAction } from "./actions/find-registrations/index.ts";
+import { retrieveProfileAction } from "./actions/retrieve-profile/index.ts";
 
 export const hederaPlugin: Plugin = {
     name: "Hedera",
     description: "Hedera blockchain integration plugin",
     providers: [hederaClientProvider],
     evaluators: [],
+    clients: [OpenConvaiClientInterface],
     services: [],
     actions: [
         balanceHbarAction,
@@ -52,7 +56,9 @@ export const hederaPlugin: Plugin = {
         createNFTTokenAction,
         mintNFTTokenAction,
         setSpendingApprovalAction,
-        createNFTTokenAction
+        createNFTTokenAction,
+        findRegistrationsAction,
+        retrieveProfileAction
     ],
 };
 
