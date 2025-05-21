@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { hederaGetTopicMessagesParamsSchema } from "./schema.ts";
 import { TxStatus } from "../../shared/constants.ts";
-import { HCSMessage } from "hedera-agent-kit";
+import { HCSMessage } from "@hashgraphonline/hedera-agent-kit";
 
 export type HederaGetTopicMessagesParams = z.infer<
     typeof hederaGetTopicMessagesParamsSchema
