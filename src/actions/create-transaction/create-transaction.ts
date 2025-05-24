@@ -68,8 +68,9 @@ export const createTransactionAction: Action = {
     validate: async (runtime) => {
         const privateKey = runtime.getSetting("HEDERA_PRIVATE_KEY");
         const accountAddress = runtime.getSetting("HEDERA_ACCOUNT_ID");
+        const openAIKey = process.env.OPENAI_API_KEY;
 
-        return !!(privateKey && accountAddress);
+        return !!(privateKey && accountAddress && openAIKey);
     },
     examples: [
         [

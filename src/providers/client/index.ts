@@ -1,5 +1,5 @@
 import { IAgentRuntime, Memory, State } from "@elizaos/core";
-import { AgentOperationalMode, HederaConversationalAgent, ServerSigner } from "@hashgraphonline/hedera-agent-kit";
+import { AgentOperationalMode, HederaConversationalAgent, ServerSigner, HederaNetworkType } from "@hashgraphonline/hedera-agent-kit";
 
 export class HederaProvider {
     private readonly agentKit: Promise<HederaConversationalAgent>;
@@ -16,8 +16,9 @@ export class HederaProvider {
 export const initAgentKit = async (_runtime: IAgentRuntime): Promise<HederaConversationalAgent> => {
     const accountID = _runtime.getSetting("HEDERA_ACCOUNT_ID");
     const privateKeyString = _runtime.getSetting("HEDERA_PRIVATE_KEY");
+    const network = (_runtime.getSetting("HEDERA_NETWORK") || "testnet") as HederaNetworkType;
     const agentMode = _runtime.getSetting("HEDERA_AGENT_MODE") || "provideBytes";
-    const signer = new ServerSigner(accountID, privateKeyString, "testnet");
+    const signer = new ServerSigner(accountID, privateKeyString, network);
     let hederaAgentKit: HederaConversationalAgent;
     try {
         hederaAgentKit = new HederaConversationalAgent(signer, {
