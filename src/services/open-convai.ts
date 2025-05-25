@@ -728,7 +728,13 @@ class OpenConvaiClient extends EventEmitter {
             const messageId = stringToUuid(
                 `${connectionTopicId}-${message.sequence_number}-${this.runtime.agentId}`
             );
-            const content: Content = { text: messageContent, source: "hedera" };
+            const content: Content = {
+                text: messageContent,
+                source: "hedera",
+                content: {
+                    message: message,
+                },
+            };
             const memory: Memory = {
                 id: messageId,
                 userId: userIdUUID,

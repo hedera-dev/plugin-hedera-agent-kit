@@ -6,6 +6,9 @@ import {
     type State,
 } from "@elizaos/core";
 import { HederaProvider } from "../../providers/client/index.ts";
+import { HCSMessage } from "@hashgraphonline/standards-sdk";
+import { HCS10Client } from "@hashgraphonline/standards-sdk";
+import { HederaNetworkType } from "@hashgraphonline/hedera-agent-kit";
 
 export const createTransactionAction: Action = {
     name: "HEDERA_CREATE_TRANSACTION",
@@ -19,9 +22,26 @@ export const createTransactionAction: Action = {
         callback?: HandlerCallback
     ) => {
         try {
-            const userMessageContent =
-                _message?.content?.text ||
-                state.recentMessagesData?.[0]?.content?.text;
+            const content =
+                _message?.content || state.recentMessagesData?.[0]?.content;
+            const userMessageContent = content?.text;
+            const hcsMessage = (
+                content?.content as unknown as {
+                    message: HCSMessage;
+                }
+            )?.message as HCSMessage;
+
+            const hederaClient = new HCS10Client({
+                operatorId: runtime.getSetting("HEDERA_ACCOUNT_ID"),
+                operatorPrivateKey: runtime.getSetting("HEDERA_PRIVATE_KEY"),
+                network: runtime.getSetting(
+                    "HEDERA_NETWORK"
+                ) as HederaNetworkType,
+            });
+
+            const userAccountId = hederaClient.extractAccountFromOperatorId(
+                hcsMessage?.operator_id
+            );
 
             if (!userMessageContent) {
                 await callback?.({
@@ -33,7 +53,7 @@ export const createTransactionAction: Action = {
                 return false;
             }
 
-            const hederaProvider = new HederaProvider(runtime);
+            const hederaProvider = new HederaProvider(runtime, userAccountId);
             const hederaAgentKit = await hederaProvider.getHederaAgentKit();
 
             const result =
