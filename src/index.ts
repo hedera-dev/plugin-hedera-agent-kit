@@ -4,6 +4,7 @@ import { OpenConvaiClientInterface } from "./services/open-convai.ts";
 import { findRegistrationsAction } from "./actions/find-registrations/index.ts";
 import { retrieveProfileAction } from "./actions/retrieve-profile/index.ts";
 import { createTransactionAction } from "./actions/create-transaction/create-transaction.ts";
+import { queryHederaAction } from "./actions/query-hedera/index.ts";
 
 export const hederaPlugin: Plugin = {
     name: "Hedera",
@@ -14,8 +15,9 @@ export const hederaPlugin: Plugin = {
     services: [],
     actions: [
         createTransactionAction,
+        queryHederaAction,
         findRegistrationsAction,
-        retrieveProfileAction
+        retrieveProfileAction,
     ],
 };
 

@@ -790,21 +790,27 @@ class OpenConvaiClient extends EventEmitter {
                     const responseContent: AgentResponse | undefined =
                         content?.content as AgentResponse;
 
+                    const isDefaultMessage =
+                        responseContent?.output === "Agent action complete.";
+
                     let sentReceipt: TransactionReceipt | undefined;
-                    if (
+                    const shouldSendTextResponse =
                         responseContent?.output &&
-                        !responseContent?.transactionBytes
-                    ) {
+                        !responseContent?.transactionBytes &&
+                        !isDefaultMessage;
+
+                    if (shouldSendTextResponse) {
                         sentReceipt = await this.client.sendMessage(
                             connectionTopicId,
                             `[Reply to #${message.sequence_number}] ${responseContent.output}`
                         );
                     }
 
-                    if (
+                    const hasNotes =
                         responseContent?.notes &&
-                        !responseContent?.transactionBytes
-                    ) {
+                        responseContent?.notes.length > 0;
+
+                    if (hasNotes) {
                         const formattedNotes = responseContent.notes
                             .map((note) => `- ${note}`)
                             .join("\n");
