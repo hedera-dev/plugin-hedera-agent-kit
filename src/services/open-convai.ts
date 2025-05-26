@@ -19,12 +19,19 @@ import {
     ConnectionsManager,
     NetworkType,
 } from "@hashgraphonline/standards-sdk";
-import { TransactionReceipt } from "@hashgraph/sdk";
+import { ScheduleCreateTransaction, TransactionReceipt } from "@hashgraph/sdk";
 import { hederaMessageHandlerTemplate } from "../templates";
+import { AgentResponse } from "@hashgraphonline/hedera-agent-kit";
 
 const logger = elizaLogger;
 const TOPIC_ID_REGEX = /^[0-9]+\.[0-9]+\.[0-9]+$/;
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+function extractAccountId(operatorId: string): string | null {
+    if (!operatorId) return null;
+    const parts = operatorId.split("@");
+    return parts.length === 2 ? parts[1] : null;
+}
 
 class OpenConvaiClient extends EventEmitter {
     runtime: IAgentRuntime;
@@ -400,13 +407,20 @@ class OpenConvaiClient extends EventEmitter {
                             continue;
                         }
 
-                        const existingActiveConnection = this.connectionsManager
-                            .getConnectionsByAccountId(requesterAccountId)
-                            .find((conn) => conn.status === "established");
+                        let existingConnection;
+                        for (const conn of this.connectionsManager.getAllConnections()) {
+                            if (
+                                conn.inboundRequestId ===
+                                message.sequence_number
+                            ) {
+                                existingConnection = conn;
+                                break;
+                            }
+                        }
 
-                        if (existingActiveConnection) {
+                        if (existingConnection) {
                             logger.info(
-                                `Using existing connection for request #${message.sequence_number}: Topic ${existingActiveConnection.connectionTopicId} with ${requesterAccountId}`
+                                `Using existing connection for request #${message.sequence_number}: Topic ${existingConnection.connectionTopicId} with ${requesterAccountId}`
                             );
                             this.connectionsManager.markConnectionRequestProcessed(
                                 this.inboundTopicId,
@@ -416,7 +430,8 @@ class OpenConvaiClient extends EventEmitter {
                         }
 
                         logger.info(
-                            `Processing inbound connection request #${message.sequence_number} from ${message.operator_id}`
+                            `Processing inbound connection request #${message.sequence_number} from ${message.operator_id}`,
+                            message
                         );
                         const newTopicId =
                             await this.handleConnectionRequest(message);
@@ -713,7 +728,13 @@ class OpenConvaiClient extends EventEmitter {
             const messageId = stringToUuid(
                 `${connectionTopicId}-${message.sequence_number}-${this.runtime.agentId}`
             );
-            const content: Content = { text: messageContent, source: "hedera" };
+            const content: Content = {
+                text: messageContent,
+                source: "hedera",
+                content: {
+                    message: message,
+                },
+            };
             const memory: Memory = {
                 id: messageId,
                 userId: userIdUUID,
@@ -741,7 +762,6 @@ class OpenConvaiClient extends EventEmitter {
                 state,
                 template: hederaMessageHandlerTemplate,
             });
-            console.log("ALL CONTEXT", context);
             logger.debug(
                 `Composed context for message #${message.sequence_number}:`,
                 context.substring(0, 200) + "..."
@@ -751,6 +771,7 @@ class OpenConvaiClient extends EventEmitter {
                 `Generating response for message #${message.sequence_number} on topic ${connectionTopicId}`
             );
             const responseContent = await this._generateResponse(context);
+            console.log("responseContent", responseContent);
             logger.info(
                 `Generated response content for message #${message.sequence_number}:`,
                 responseContent.text?.substring(0, 100) + "..."
@@ -760,19 +781,83 @@ class OpenConvaiClient extends EventEmitter {
 
             const callback = async (content: Content): Promise<Memory[]> => {
                 try {
-                    let textToSend = content.text || "";
-                    if (content.inReplyTo === messageId) {
-                        const replyPrefix = `[Reply to #${message.sequence_number}] `;
-                        textToSend = replyPrefix + textToSend;
-                    }
+                    console.log("going to send response", content);
                     logger.info(
-                        `Sending response via callback to topic ${connectionTopicId}: "${textToSend.substring(0, 100)}..."`
+                        `Sending response via callback to topic ${connectionTopicId}:`
                     );
+                    logger.info(JSON.stringify(content));
 
-                    const sentReceipt = await this.sendResponse(
-                        connectionTopicId,
-                        textToSend
-                    );
+                    const responseContent: AgentResponse | undefined =
+                        content?.content as AgentResponse;
+
+                    let sentReceipt: TransactionReceipt | undefined;
+                    if (
+                        responseContent?.output &&
+                        !responseContent?.transactionBytes
+                    ) {
+                        sentReceipt = await this.client.sendMessage(
+                            connectionTopicId,
+                            `[Reply to #${message.sequence_number}] ${responseContent.output}`
+                        );
+                    }
+
+                    if (
+                        responseContent?.notes &&
+                        !responseContent?.transactionBytes
+                    ) {
+                        const formattedNotes = responseContent.notes
+                            .map((note) => `- ${note}`)
+                            .join("\n");
+                        const inferenceMessage =
+                            "I've made some inferences based on your prompt. If this isn't what you expected, please try a more refined prompt.";
+                        sentReceipt = await this.client.sendMessage(
+                            connectionTopicId,
+                            `[Reply to #${message.sequence_number}]\n${inferenceMessage}\n${formattedNotes}`
+                        );
+                    }
+
+                    if (responseContent?.transactionBytes) {
+                        const transaction = ScheduleCreateTransaction.fromBytes(
+                            Buffer.from(
+                                responseContent.transactionBytes || "",
+                                "base64"
+                            )
+                        );
+
+                        let reply = `[Reply to #${message.sequence_number}]`;
+                        if (
+                            responseContent?.notes?.length &&
+                            responseContent?.notes?.length > 0
+                        ) {
+                            const inferenceMessage =
+                                "I've made some inferences based on your prompt. If this isn't what you expected, please try a more refined prompt.";
+                            const formattedNotes = responseContent.notes
+                                .map((note) => `- ${note}`)
+                                .join("\n");
+                            reply += `\n${inferenceMessage}\n${formattedNotes}`;
+                        }
+
+                        const schedulePayerAccountId = extractAccountId(
+                            message.operator_id
+                        );
+
+                        await this.client.sendTransaction(
+                            connectionTopicId,
+                            transaction,
+                            reply,
+                            {
+                                schedulePayerAccountId:
+                                    schedulePayerAccountId || undefined,
+                            }
+                        );
+                    }
+
+                    if (!responseContent?.transactionBytes && content?.text) {
+                        sentReceipt = await this.client.sendMessage(
+                            connectionTopicId,
+                            `[Reply to #${message.sequence_number}]\n${content.text}`
+                        );
+                    }
 
                     const responseMemory: Memory = {
                         id: stringToUuid(

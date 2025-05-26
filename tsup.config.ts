@@ -14,7 +14,6 @@ export default defineConfig({
         "https",
         "http",
         "agentkeepalive",
-        "@hashgraph/sdk",
         "zod"
     ],
 });

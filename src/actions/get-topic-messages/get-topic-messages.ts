@@ -9,7 +9,7 @@ import {
 } from "@elizaos/core";
 import { HederaProvider } from "../../providers/client";
 import { HederaGetTopicMessagesParams } from "./types.ts";
-import { HederaNetworkType } from "hedera-agent-kit";
+import { HederaNetworkType } from "@hashgraphonline/hedera-agent-kit";
 import { TxStatus } from "../../shared/constants.ts";
 import { convertTimestampToUTC } from "../../shared/utils.ts";
 import { hederaGetTopicMessagesParamsSchema } from "./schema.ts";
