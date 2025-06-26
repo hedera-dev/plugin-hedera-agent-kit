@@ -1,173 +1,164 @@
 import {
-    composeContext,
-    generateObjectDeprecated,
-    HandlerCallback,
-    IAgentRuntime,
-    Memory,
-    ModelClass,
-    State,
+  composePromptFromState,
+  parseKeyValueXml,
+  HandlerCallback,
+  IAgentRuntime,
+  Memory,
+  ModelType,
+  State,
 } from "@elizaos/core";
-import { HederaProvider } from "../../providers/client";
 import { HederaGetTopicMessagesParams } from "./types.ts";
-import { HederaNetworkType } from "@hashgraphonline/hedera-agent-kit";
-import { TxStatus } from "../../shared/constants.ts";
-import { convertTimestampToUTC } from "../../shared/utils.ts";
 import { hederaGetTopicMessagesParamsSchema } from "./schema.ts";
-import { GetTopicMessageActionService } from "./services/get-topic-messages-action-service.ts";
+import { GetTopicMessagesActionService } from "./services/get-topic-messages-action-service.ts";
 import { getTopicMessagesTemplate } from "../../templates";
 
 export const getTopicMessagesAction = {
-    name: "HEDERA_GET_TOPIC_MESSAGES",
-    description:
-        "Action for fetching messages from a topic by its ID, with the option to filter messages by upper and lower thresholds.",
-    handler: async (
-        runtime: IAgentRuntime,
-        _message: Memory,
-        state: State,
-        _options: { [key: string]: unknown },
-        callback?: HandlerCallback
-    ) => {
-        state.lastMessage = state.recentMessagesData[1].content.text;
+  name: "HEDERA_GET_TOPIC_MESSAGES",
+  description:
+    "Action for fetching messages from a topic by its ID, with the option to filter messages by upper and lower thresholds.",
+  handler: async (
+    runtime: IAgentRuntime,
+    _message: Memory,
+    state?: State,
+    _options?: { [key: string]: unknown },
+    callback?: HandlerCallback
+  ) => {
+    if (!state) {
+      state = await runtime.composeState(_message);
+    }
+    state.lastMessage = state.recentMessagesData?.[1]?.content?.text || 
+                        state.recentMessagesData?.[0]?.content?.text || 
+                        _message?.content?.text || 
+                        "";
 
-        const hederaGetTopicMessagesContext = composeContext({
-            state: state,
-            template: getTopicMessagesTemplate,
-            templatingEngine: "handlebars",
-        });
+    const prompt = composePromptFromState({
+      state: state,
+      template: getTopicMessagesTemplate,
+    });
 
-        const hederaGetTopicMessagesContent = await generateObjectDeprecated({
-            runtime: runtime,
-            context: hederaGetTopicMessagesContext,
-            modelClass: ModelClass.SMALL,
-        });
+    const xmlResult = await runtime.useModel(ModelType.TEXT_SMALL, {
+      prompt,
+    });
 
-        const paramOptions: HederaGetTopicMessagesParams = {
-            topicId: hederaGetTopicMessagesContent.topicId,
-            lowerThreshold: hederaGetTopicMessagesContent.lowerThreshold,
-            upperThreshold: hederaGetTopicMessagesContent.upperThreshold,
-        };
+    const hederaGetTopicMessagesContent = parseKeyValueXml(xmlResult);
+    if (!hederaGetTopicMessagesContent) {
+      throw new Error("Failed to parse XML result");
+    }
 
-        console.log(`Extracted data: ${JSON.stringify(paramOptions, null, 2)}`);
+    const paramOptions: HederaGetTopicMessagesParams = {
+      topicId: hederaGetTopicMessagesContent.topicId,
+      lowerThreshold: hederaGetTopicMessagesContent.lowerThreshold || null,
+      upperThreshold: hederaGetTopicMessagesContent.upperThreshold || null,
+    };
 
-        try {
-            const validationResult =
-                hederaGetTopicMessagesParamsSchema.safeParse(paramOptions);
+    console.log(`Extracted data: ${JSON.stringify(paramOptions, null, 2)}`);
 
-            if (!validationResult.success) {
-                const errorMessages = validationResult.error.errors.map(
-                    (e) =>
-                        `Field "${e.path.join(".")}" failed validation: ${e.message}`
-                );
-                throw new Error(
-                    `Error during parsing data from users prompt: ${errorMessages.join(", ")}`
-                );
-            }
+    try {
+      const validationResult =
+        hederaGetTopicMessagesParamsSchema.safeParse(paramOptions);
 
-            const hederaProvider = new HederaProvider(runtime);
-            const networkType = runtime.getSetting(
-                "HEDERA_NETWORK_TYPE"
-            ) as HederaNetworkType;
+      if (!validationResult.success) {
+        const errorMessages = validationResult.error.errors.map(
+          (e) => `Field "${e.path.join(".")}" failed validation: ${e.message}`
+        );
+        throw new Error(
+          `Error during parsing data from users prompt: ${errorMessages.join(", ")}`
+        );
+      }
 
-            const action = new GetTopicMessageActionService(hederaProvider);
+      const service = new GetTopicMessagesActionService();
+      const response = await service.processAction(runtime, validationResult.data);
 
-            const response = await action.execute(
-                validationResult.data,
-                networkType
-            );
-
-            if (callback && response.status === TxStatus.SUCCESS) {
-                let formatedText = "";
-
-                if (response.messages.length == 0) {
-                    formatedText = "No messages found.";
-                } else {
-                    response.messages.forEach((hcsMessage) => {
-                        formatedText += `-----------------------\nAuthor: ${hcsMessage.payer_account_id}\nBody: ${hcsMessage.message}\nTimestamp: ${convertTimestampToUTC(hcsMessage.consensus_timestamp)}\n`;
-                    });
-                }
-
-                const dateRangeText = `between ${validationResult.data.lowerThreshold ? validationResult.data.lowerThreshold : "topic creation"} and ${validationResult.data.upperThreshold ? validationResult.data.upperThreshold : "this moment"}`;
-
-                await callback({
-                    text: `Messages for topic ${paramOptions.topicId} posted ${dateRangeText}:\n${formatedText}`,
-                });
-            }
-
-            return true;
-        } catch (error) {
-            console.error("Error fetching messages. Error:", error);
-
-            if (callback) {
-                await callback({
-                    text: `Error fetching messages. Error: ${error.message}`,
-                    content: { error: error.message },
-                });
-            }
-            return false;
+      if (callback) {
+        if (response.success) {
+          await callback({
+            text: response.formattedResponse || "Messages retrieved successfully",
+          });
+        } else {
+          await callback({
+            text: `Error: ${response.error}`,
+            content: { error: response.error },
+          });
         }
-    },
-    template: getTopicMessagesTemplate,
-    validate: async (runtime: IAgentRuntime) => {
-        const privateKey = runtime.getSetting("HEDERA_PRIVATE_KEY");
-        const accountAddress = runtime.getSetting("HEDERA_ACCOUNT_ID");
-        const selectedNetworkType = runtime.getSetting("HEDERA_NETWORK_TYPE");
+      }
 
-        return !!(privateKey && accountAddress && selectedNetworkType);
-    },
-    examples: [
-        [
-            {
-                user: "user",
-                content: {
-                    text: "Get messages from a topic {{0.0.123456}}.",
-                    action: "HEDERA_GET_TOPIC_MESSAGES",
-                },
-            },
-            {
-                user: "assistant",
-                content: {
-                    text: "",
-                    action: "HEDERA_GET_TOPIC_MESSAGES",
-                },
-            },
-        ],
-        [
-            {
-                user: "user",
-                content: {
-                    text: "Show me all messages from a topic {{0.0.123456}}, that have been posted since {{05.02.2025 14:14:14:144}}.",
-                    action: "HEDERA_GET_TOPIC_MESSAGES",
-                },
-            },
-            {
-                user: "assistant",
-                content: {
-                    text: "",
-                    action: "HEDERA_GET_TOPIC_MESSAGES",
-                },
-            },
-        ],
-        [
-            {
-                user: "user",
-                content: {
-                    text: "Show me all messages from a topic {{0.0.123456}}, that have been posted between {{05.02.2025 14:14:14:144}} and {{08.02.2025 20:14:20:144}}.",
-                    action: "HEDERA_GET_TOPIC_MESSAGES",
-                },
-            },
-            {
-                user: "assistant",
-                content: {
-                    text: "",
-                    action: "HEDERA_GET_TOPIC_MESSAGES",
-                },
-            },
-        ],
-    ],
+      return response.success;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error("Error fetching messages. Error:", error);
 
-    similes: [
-        "HEDERA_GET_TOPIC_MESSAGES",
-        "HEDERA_GET_HCS_MESSAGES",
-        "HCS_FETCH_MESSAGES",
+      if (callback) {
+        await callback({
+          text: `Error fetching messages. Error: ${errorMessage}`,
+          content: { error: errorMessage },
+        });
+      }
+      return false;
+    }
+  },
+  template: getTopicMessagesTemplate,
+  validate: async (runtime: IAgentRuntime) => {
+    const privateKey = runtime.getSetting("HEDERA_PRIVATE_KEY");
+    const accountAddress = runtime.getSetting("HEDERA_ACCOUNT_ID");
+    const selectedNetworkType = runtime.getSetting("HEDERA_NETWORK_TYPE");
+
+    return !!(privateKey && accountAddress && selectedNetworkType);
+  },
+  examples: [
+    [
+      {
+        name: "{{user}}",
+        content: {
+          text: "Get messages from a topic {{0.0.123456}}.",
+          action: "HEDERA_GET_TOPIC_MESSAGES",
+        },
+      },
+      {
+        name: "{{assistant}}",
+        content: {
+          text: "",
+          action: "HEDERA_GET_TOPIC_MESSAGES",
+        },
+      },
     ],
+    [
+      {
+        name: "{{user}}",
+        content: {
+          text: "Show me all messages from a topic {{0.0.123456}}, that have been posted since {{05.02.2025 14:14:14:144}}.",
+          action: "HEDERA_GET_TOPIC_MESSAGES",
+        },
+      },
+      {
+        name: "{{assistant}}",
+        content: {
+          text: "",
+          action: "HEDERA_GET_TOPIC_MESSAGES",
+        },
+      },
+    ],
+    [
+      {
+        name: "{{user}}",
+        content: {
+          text: "Show me all messages from a topic {{0.0.123456}}, that have been posted between {{05.02.2025 14:14:14:144}} and {{08.02.2025 20:14:20:144}}.",
+          action: "HEDERA_GET_TOPIC_MESSAGES",
+        },
+      },
+      {
+        name: "{{assistant}}",
+        content: {
+          text: "",
+          action: "HEDERA_GET_TOPIC_MESSAGES",
+        },
+      },
+    ],
+  ],
+
+  similes: [
+    "HEDERA_GET_TOPIC_MESSAGES",
+    "HEDERA_GET_HCS_MESSAGES",
+    "HCS_FETCH_MESSAGES",
+  ],
 };

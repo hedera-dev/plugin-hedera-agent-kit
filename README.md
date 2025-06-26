@@ -12,7 +12,7 @@ Add variables required for `@elizaos/plugin-hedera` :
 
 ```env
 # Required: Hedera account private key (accepts ED25519 and ECDSA, both DER and HEX encoded)
-HEDERA_PRIVATE_KEY= 
+HEDERA_PRIVATE_KEY=
 
 # Required: Hedera account ID (ex. `0.0.5393196`)
 HEDERA_ACCOUNT_ID=
@@ -21,7 +21,7 @@ HEDERA_ACCOUNT_ID=
 HEDERA_NETWORK=testnet
 
 # Optional: Agent operational mode (defaults to 'provideBytes')
-# Options: 'provideBytes', 'scheduleTransaction', 'executeTransaction' 
+# Options: 'provideBytes', 'scheduleTransaction', 'executeTransaction'
 HEDERA_AGENT_MODE=provideBytes
 
 # Required for natural language processing: OpenAI API key
@@ -36,16 +36,17 @@ HEDERA_NETWORK_TYPE=testnet
 ```
 
 **Important:** The minimum required environment variables are:
+
 - `HEDERA_PRIVATE_KEY` - Your Hedera account private key
-- `HEDERA_ACCOUNT_ID` - Your Hedera account ID  
+- `HEDERA_ACCOUNT_ID` - Your Hedera account ID
 - `OPENAI_API_KEY` - Required for natural language transaction processing
 
 Ensure the appropriate environment variables are added for the plugin. If they are correctly configured, the project will run with `@elizaos/plugin-hedera`
 
 Run Eliza
 
-``` bash
-  pnpm run dev
+```bash
+  bun run dev
 ```
 
 ---
@@ -61,32 +62,40 @@ The plugin includes a pre-configured character, `universalHelper.character.json`
 To use the character, pass it with the `--characters` flag:
 
 ```bash
-  pnpm run dev --characters='../characters/universalHelper.character.json'
+  bun run dev --characters='../characters/universalHelper.character.json'
 ```
 
 ---
 
 ### Testing
+
 For testing purposes it is recommended to erase agent's memory on the app start.
 This helps you achieve clean environment and erases impact of previously called actions and passed prompts which helps to test new changes during development.
 To erase agent's memory and run Eliza with recommended character use following script
+
 ```bash
-  rm ./agent/data/db.sqlite ; pnpm run dev --character ./characters/universalHelper.character.json 
+  rm ./agent/data/db.sqlite ; bun run dev --character ./characters/universalHelper.character.json
 ```
+
 ---
 
 ## Provider
-Plugin implements provider creating instance of `HederaAgentKit` from 
+
+Plugin implements provider creating instance of `HederaAgentKit` from
 `hedera-agent-kit`. `HederaAgentKit` offers API for interacting with Hedera blockchain and supports executing of operations called from actions.
 
 Provider contains method `get()` that is called after each input given by user. It takes care of refreshing amount of HBAR held by connected account and stored in agent's memory - state.
 
 Connected wallet is considered to be the agent's property. Due to that fact for extracting knowledge about connected wallet's HBAR balance use the following prompt:
+
 1. User input
+
 ```
 What's yours HBAR balance?
 ```
+
 2. Response from LLM based on stored context:
+
 ```
 My current HBAR balance is 999.81307987 HBAR.
 ```
@@ -112,8 +121,9 @@ This action uses the `hedera-agent-kit.processMessage()` method to intelligently
 - **Advanced Operations** - Token airdrops, supply management, metadata updates
 
 #### Key Features:
+
 - **Natural Language Processing** - Simply describe what you want to do in plain English
-- **Intelligent Parsing** - Automatically extracts transaction details from user requests  
+- **Intelligent Parsing** - Automatically extracts transaction details from user requests
 - **Comprehensive Coverage** - Handles all major Hedera operations through a single action
 - **Error Handling** - Provides clear feedback on transaction success or failure
 - **Transaction Links** - Returns hashscan.io links for easy verification
@@ -121,43 +131,51 @@ This action uses the `hedera-agent-kit.processMessage()` method to intelligently
 #### Example Prompts:
 
 **HBAR Transfer:**
+
 ```
 Transfer 150 hbar to Hedera account 0.0.12345 and memo it 'Payment for services'
 ```
 
 **Create HCS Topic:**
+
 ```
 On Hedera, create a new HCS topic with the memo 'Weekly project updates'
 ```
 
 **Token Creation:**
+
 ```
 Create a new Hedera fungible token named 'SuperCoin' with symbol 'SPC', initial supply of 1 million, and 2 decimal places
 ```
 
 **NFT Minting:**
+
 ```
 Mint 500 units of my Hedera NFT collection with token ID 0.0.78901
 ```
 
 **Token Association:**
+
 ```
 Associate Hedera token 0.0.98765 with my account
 ```
 
 **Check Balances:**
+
 ```
 Show me HBAR balance of wallet 0.0.5423981
 What are my HTS token balances?
 ```
 
 **Topic Messaging:**
+
 ```
 Submit message 'Hello World' to topic 0.0.123456
 Get messages from topic 0.0.123456 posted after yesterday
 ```
 
 **Token Operations:**
+
 ```
 Airdrop 100 tokens 0.0.5450181 to accounts 0.0.5450165 and 0.0.5450137
 Mint 1000 additional tokens for token ID 0.0.5478757
@@ -167,7 +185,7 @@ The action automatically determines the transaction type based on your natural l
 
 ---
 
-### HEDERA_FIND_REGISTRATIONS  
+### HEDERA_FIND_REGISTRATIONS
 
 **OpenConvAI Agent Discovery** - Find and discover AI agents registered in the OpenConvAI (HCS-10) registry on Hedera.
 
@@ -215,12 +233,14 @@ The plugin includes an OpenConvAI client interface that enables participation in
 All the following operations are now handled through natural language requests to the `HEDERA_CREATE_TRANSACTION` action:
 
 **Account & Balance Operations:**
+
 - Check HBAR balances for any account
 - Check HTS token balances (individual or all tokens)
 - View token holders and distribution
 - Show pending airdrops
 
 **Token Operations:**
+
 - Create fungible tokens with custom parameters
 - Create and mint NFTs
 - Associate/dissociate tokens
@@ -231,6 +251,7 @@ All the following operations are now handled through natural language requests t
 - Mint additional supply (with supply key)
 
 **HCS Topic Operations:**
+
 - Create new topics with optional submit keys
 - Submit messages to topics
 - Retrieve topic information and metadata
@@ -238,6 +259,7 @@ All the following operations are now handled through natural language requests t
 - Delete topics (with admin key)
 
 **Example Natural Language Requests:**
+
 ```
 "Show me HBAR balance of wallet 0.0.5423981"
 "Create token GameGold with symbol GG, 2 decimals, and 750000 supply"
@@ -289,8 +311,9 @@ The plugin is still in development phase. It heavily depends on `hedera-agent-ki
 Consider this code as an evolving implementation that continues to improve.
 
 Areas of ongoing development:
+
 - Enhanced natural language processing capabilities
-- Additional Hedera service integrations  
+- Additional Hedera service integrations
 - Improved OpenConvAI standard support
 - Extended testing coverage
 
@@ -306,8 +329,8 @@ This project communicates with an **ElizaOS instance** via REST API on the defau
 
 - **Mirror Node delay:** The Hedera Mirror Node has a slight delay, so additional waiting time is required between performing an action and checking the results
 - **Sequential execution only:**
-    - Tests **cannot** run in parallel because requests and responses from the agent **must be processed in chronological order**
-    - Concurrent testing is **disabled**, and additional timeouts are introduced before each test to improve reliability
+  - Tests **cannot** run in parallel because requests and responses from the agent **must be processed in chronological order**
+  - Concurrent testing is **disabled**, and additional timeouts are introduced before each test to improve reliability
 
 #### Environment Setup
 

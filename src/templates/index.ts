@@ -1,4 +1,5 @@
-import { messageCompletionFooter } from "@elizaos/core";
+// messageCompletionFooter was removed in @elizaos/core v1.x
+const messageCompletionFooter = "";
 
 export const hederaHBARTransferTemplate = `Given the last message:
 {{lastMessage}}
@@ -859,57 +860,39 @@ Using only last message extract the following information about message to submi
 2. **Lower Threshold**:
    - Must be a string.
    - A valid string date format that can be parsed into an unix timestamp.
-   - null if not provided
+   - Leave empty if not provided
 3. **Upper Threshold**:
    - Must be a string.
    - A valid string date format that can be parsed into an unix timestamp.
-   - null if not provided
+   - Leave empty if not provided
 
 Must not use information from user messages other than the last one!
 Extract information from user prompt and create from them strings in format ex. "2025-02-05T14:57:35.123Z".
 Fill the lacking information. For example if user gave only year and month ex. 2020.03 create valid string "2020-03-01T00:00:00.000Z".
 If only year was given consider ex. 2002 consider it "2002-01-01T00:00:00.000Z".
 Sort the timestamps to assign the higher one to upperThreshold and lower to lowerThreshold.
-Thresholds are optional! If not provided at all pass null values to returned JSON.
+Thresholds are optional! If not provided at all, omit them from the response.
 
 Always look at the latest message from user and try to extract data from it!
-Respond with a JSON markdown block containing only the extracted values. Only topicId is not nullable:
-\`\`\`json
-{
-    "topicId": string,
-    "lowerThreshold": string,
-    "upperThreshold": string,
-}
-\`\`\`
+Respond with an XML block containing only the extracted values:
 
-Example response for the input: "Show me messages from topic 0.0.123456", the response should be:
-\`\`\`json
-{
-    "topicId": "0.0.123456",
-    "lowerThreshold: null,
-    "upperThreshold": null,
-}
-\`\`\`
+Example response for the input: "Show me messages from topic 0.0.123456":
+<response>
+    <topicId>0.0.123456</topicId>
+</response>
 
-Example response for the input: "Show me messages from topic 0.0.123456. I want only the one that were posted after 2 January 2025", the response should be:
-\`\`\`json
-{
-    "topicId": "0.0.123456",
-    "lowerThreshold: "2025-01-02T00:00:00.000Z",
-    "upperThreshold": null,
-}
-\`\`\`
+Example response for the input: "Show me messages from topic 0.0.123456. I want only the one that were posted after 2 January 2025":
+<response>
+    <topicId>0.0.123456</topicId>
+    <lowerThreshold>2025-01-02T00:00:00.000Z</lowerThreshold>
+</response>
 
-Example response for the input: "Show me messages from topic 0.0.123456 posted between 20 January 2025 12:50:30.123 and 5 march 2024 13:40", the response should be:
-\`\`\`json
-{
-    "topicId": "0.0.5423966",
-    "lowerThreshold: "2024-03-05T13:40:00.000Z",
-    "upperThreshold": "2025-01-20T12:50:30.123",
-}
-\`\`\`
-
-Now respond with a JSON markdown block containing only the extracted values.
+Example response for the input: "Show me messages from topic 0.0.123456 posted between 20 January 2025 12:50:30.123 and 5 march 2024 13:40":
+<response>
+    <topicId>0.0.5423966</topicId>
+    <lowerThreshold>2024-03-05T13:40:00.000Z</lowerThreshold>
+    <upperThreshold>2025-01-20T12:50:30.123Z</upperThreshold>
+</response>
 `;
 
 export const mintTokenTemplate = `Given the last message:
@@ -1039,7 +1022,7 @@ Now respond with a JSON markdown block containing only the extracted values.
 `;
 
 export const hederaMessageHandlerTemplate =
-    `
+  `
 # Task: Generate dialog and actions for the character {{agentName}} interacting via Hedera Consensus Service.
 
 # About {{agentName}}:
@@ -1086,11 +1069,26 @@ AI agent profiles include these key fields:
 - aiAgent.creator: Creator of this Agent
 - properties: Additional custom properties as key-value pairs
 
-IMPORTANT: Respond ONLY with a JSON object containing extracted parameters.
-Example response: { "accountId": "0.0.12345" }
-Example response: { "disableCache": true }
-Example response: { "accountId": "0.0.12345", "disableCache": true }
-Example response: {}
+Respond with an XML block containing only the extracted parameters.
+Example response for account ID:
+<response>
+    <accountId>0.0.12345</accountId>
+</response>
+
+Example response for disabling cache:
+<response>
+    <disableCache>true</disableCache>
+</response>
+
+Example response for both:
+<response>
+    <accountId>0.0.12345</accountId>
+    <disableCache>true</disableCache>
+</response>
+
+Example response when no specific parameters:
+<response>
+</response>
 `;
 
 export const findRegistrationsTemplate = `
@@ -1121,9 +1119,23 @@ MULTI_AGENT_COORDINATION = 16
 API_INTEGRATION = 17
 WORKFLOW_AUTOMATION = 18
 
-IMPORTANT: Respond ONLY with a JSON object containing extracted parameters.
-Example response: { "accountId": "0.0.12345" }
-Example response: { "tags": [0] }
-Example response: { "tags": [0, 4] }
-Example response: {}
+Respond with an XML block containing only the extracted parameters.
+Example response for finding by account ID:
+<response>
+    <accountId>0.0.12345</accountId>
+</response>
+
+Example response for finding by capabilities:
+<response>
+    <tags>0</tags>
+</response>
+
+Example response for multiple capabilities:
+<response>
+    <tags>0,4</tags>
+</response>
+
+Example response when no specific parameters:
+<response>
+</response>
 `;

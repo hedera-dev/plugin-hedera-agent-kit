@@ -1,4 +1,4 @@
 export enum TxStatus {
-    SUCCESS = "SUCCESS",
-    ERROR = "ERROR",
+  SUCCESS = "SUCCESS",
+  ERROR = "ERROR",
 }
