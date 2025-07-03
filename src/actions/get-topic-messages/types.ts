@@ -4,10 +4,10 @@ import { TxStatus } from "../../shared/constants.ts";
 import { HCSMessage } from "@hashgraphonline/hedera-agent-kit";
 
 export type HederaGetTopicMessagesParams = z.infer<
-    typeof hederaGetTopicMessagesParamsSchema
+  typeof hederaGetTopicMessagesParamsSchema
 >;
 
 export type GetTopicMessagesResult = {
-    status: TxStatus;
-    messages: Array<HCSMessage>;
+  status: TxStatus;
+  messages: Array<HCSMessage>;
 };

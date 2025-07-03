@@ -1,7 +1,8 @@
-node_modules/
-
+dist
+node_modules
 .env
-
-dist/**
-
+.elizadb
+.turbo
 .idea
+bun.lockb
+*.log

@@ -19,4 +19,4 @@ export interface ProfileResult {
     creator?: string;
   };
   [key: string]: unknown;
-} 
+}

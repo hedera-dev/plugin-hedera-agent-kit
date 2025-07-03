@@ -1,53 +1,99 @@
 {
-    "name": "@elizaos/plugin-hedera",
-    "version": "0.1.9-alpha.3",
-    "main": "dist/index.js",
-    "type": "module",
-    "types": "dist/index.d.ts",
-    "dependencies": {
-        "@elizaos/core": "0.25.6-alpha.1",
-        "@hashgraph/sdk": "^2.64.5",
-        "@hashgraphonline/standards-agent-kit": "^0.0.27",
-        "@hashgraphonline/standards-sdk": "^0.0.111",
-        "bignumber.js": "^9.1.2",
-        "dotenv": "^16.4.7",
-        "@hashgraphonline/hedera-agent-kit": "0.0.16",
-        "tsup": "8.5.0",
-        "zod": "^3.25.17"
-    },
-    "scripts": {
-        "build": "tsup --format esm --dts",
-        "dev": "tsup --format esm --dts --watch",
-        "postinstall": "pnpm run build",
-        "test": "vitest run"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.20.0",
-        "@typescript-eslint/eslint-plugin": "^8.24.0",
-        "@typescript-eslint/parser": "^8.24.0",
-        "eslint": "^9.20.1",
-        "eslint-config-prettier": "^10.0.1",
-        "prettier": "^3.5.0",
-        "typescript": "^5.7.3",
-        "vitest": "^3.0.7"
-    },
-    "agentConfig": {
-        "pluginType": "elizaos:plugin:0.1.9",
-        "pluginParameters": {
-            "HEDERA_PRIVATE_KEY": {
-                "type": "string",
-                "description": "Accepts ED25519 and ECDSA private keys both DER and HEX encoded"
-            },
-            "HEDERA_ACCOUNT_ID": {
-                "type": "string",
-                "description": "Example: 0.0.5392887"
-            },
-            "HEDERA_AGENT_MODE": {
-                "type": "string",
-                "description": "Example: 'provideBytes' or 'directExecution'",
-                "default": "provideBytes"
-            }
-        }
-    },
-    "packageManager": "pnpm@9.15.7+sha512.ed98f9c748442673c46964b70345bd2282c9b305e8eae539b34ab31d6ef24ef8dd59d8b55f27466f705500b009d9c113471cf87e544f3d5036b297330c26e996"
+  "name": "@elizaos/plugin-hedera",
+  "version": "1.0.1",
+  "description": "Hedera Hashgraph integration plugin for ElizaOS - enables AI agents to interact with Hedera network services including HCS topics, token operations, and decentralized agent communication",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "author": "ElizaOS Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elizaos/eliza-plugin-hedera"
+  },
+  "keywords": [
+    "elizaos",
+    "hedera",
+    "hashgraph",
+    "blockchain",
+    "ai-agents",
+    "hcs",
+    "hedera-consensus-service",
+    "web3",
+    "plugin"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "dependencies": {
+    "@elizaos/core": "^1.0.15",
+    "@hashgraph/sdk": "^2.64.5",
+    "@hashgraphonline/standards-agent-kit": "^0.0.27",
+    "@hashgraphonline/standards-sdk": "^0.0.111",
+    "bignumber.js": "^9.1.2",
+    "dotenv": "^16.4.7",
+    "@hashgraphonline/hedera-agent-kit": "0.0.16",
+    "tsup": "8.5.0",
+    "zod": "^3.25.17"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "prettier --write ./src",
+    "clean": "rm -rf dist .turbo node_modules .turbo-tsconfig.json tsconfig.tsbuildinfo",
+    "format": "prettier --write ./src",
+    "format:check": "prettier --check ./src",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "prettier": "^3.5.0",
+    "typescript": "^5.7.3",
+    "bun": "latest",
+    "@types/bun": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "agentConfig": {
+    "pluginType": "elizaos:plugin:1.0.0",
+    "pluginParameters": {
+      "HEDERA_PRIVATE_KEY": {
+        "type": "string",
+        "description": "Accepts ED25519 and ECDSA private keys both DER and HEX encoded",
+        "required": true,
+        "sensitive": true
+      },
+      "HEDERA_ACCOUNT_ID": {
+        "type": "string",
+        "description": "Example: 0.0.5392887",
+        "required": true,
+        "sensitive": false
+      },
+      "HEDERA_AGENT_MODE": {
+        "type": "string",
+        "description": "Example: 'provideBytes' or 'directExecution'",
+        "default": "provideBytes",
+        "required": false,
+        "sensitive": false
+      }
+    }
+  },
+  "packageManager": "pnpm@9.15.7+sha512.ed98f9c748442673c46964b70345bd2282c9b305e8eae539b34ab31d6ef24ef8dd59d8b55f27466f705500b009d9c113471cf87e544f3d5036b297330c26e996"
 }
