@@ -1,256 +1,56 @@
-# Plugin Quick Starter
+# `@elizaos/plugin-hedera`
+This plugin provides actions and utilities for interacting with Hedera blockchain.
 
-A minimal backend-only plugin template for ElizaOS. This template provides a clean starting point for creating simple plugins without frontend complexity.
+---
 
-## Overview
+Prepare Eliza according to [README](https://github.com/elizaOS/eliza/blob/main/README.md).
 
-This quick-starter template is ideal for:
+Add variables required for `@elizaos/plugin-hedera` :
 
-- Backend-only plugins
-- Simple API integrations
-- Services and providers
-- Actions without UI components
-- Lightweight extensions
+```env
+# Required: Hedera account private key (accepts ED25519 and ECDSA, both DER and HEX encoded)
+HEDERA_PRIVATE_KEY= 
 
-## Structure
+# Required: Hedera account ID (ex. `0.0.5393196`)
+HEDERA_ACCOUNT_ID=
 
-```
-plugin-hedera/
-├── src/
-│   ├── __tests__/          # Test directory
-│   │   ├── e2e/            # E2E tests
-│   │   │   ├── plugin-hedera.e2e.ts
-│   │   │   └── README.md
-│   │   ├── plugin.test.ts  # Component tests
-│   │   └── test-utils.ts   # Test utilities
-│   ├── plugin.ts           # Main plugin implementation (exports tests)
-│   └── index.ts            # Plugin export
-├── scripts/
-│   └── install-test-deps.js # Test dependency installer
-├── tsup.config.ts          # Build configuration
-├── tsconfig.json           # TypeScript config
-├── package.json            # Minimal dependencies
-└── README.md               # This file
+
+# Required for natural language processing: OpenAI API key
+OPENAI_API_KEY=
 ```
 
-## Getting Started
+**Important:** The minimum required environment variables are:
+- `HEDERA_PRIVATE_KEY` - Your Hedera account private key
+- `HEDERA_ACCOUNT_ID` - Your Hedera account ID
+- `OPENAI_API_KEY` - Required for natural language transaction processing
 
-1. **Create your plugin:**
+Ensure the appropriate environment variables are added for the plugin. If they are correctly configured, the project will run with `@elizaos/plugin-hedera`
 
-   ```bash
-   elizaos create my-plugin
-   # Select: Plugin
-   # Select: Quick Plugin (Backend Only)
-   ```
+Run Eliza
 
-2. **Navigate to your plugin:**
-
-   ```bash
-   cd my-plugin
-   ```
-
-3. **Install dependencies:**
-
-   ```bash
-   bun install
-   ```
-
-4. **Start development:**
-   ```bash
-   bun run dev
-   ```
-
-## Key Features
-
-### Minimal Dependencies
-
-- Only essential packages (`@elizaos/core`, `zod`)
-- No frontend frameworks or build tools
-- Fast installation and builds
-
-### Comprehensive Testing
-
-- Component tests with Bun test runner for unit testing
-- E2E tests with ElizaOS test runner for integration testing
-- Quick test execution with focused test suites
-
-### Backend Focus
-
-- API routes for server-side functionality
-- Services for state management
-- Actions for agent capabilities
-- Providers for contextual data
-
-## Plugin Components
-
-### Actions
-
-Define agent capabilities:
-
-```typescript
-const myAction: Action = {
-  name: "MY_ACTION",
-  description: "Description of what this action does",
-  validate: async (runtime, message, state) => {
-    // Validation logic
-    return true;
-  },
-  handler: async (runtime, message, state, options, callback) => {
-    // Action implementation
-    return { success: true, data: {} };
-  },
-};
+``` bash
+  elizaos dev
 ```
 
-### Services
+The plugin should load automatically to the `Eliza (Test Mode)` agent.
 
-Manage plugin state:
+## Interaction examples
+Try interacting with the agent:
 
-```typescript
-export class MyService extends Service {
-  static serviceType = "my-service";
-
-  async start() {
-    // Initialize service
-  }
-
-  async stop() {
-    // Cleanup
-  }
-}
+```shell
+Whats my HBAR balance?
 ```
 
-### Providers
-
-Supply contextual information:
-
-```typescript
-const myProvider: Provider = {
-  name: "MY_PROVIDER",
-  description: "Provides contextual data",
-  get: async (runtime, message, state) => {
-    return {
-      text: "Provider data",
-      values: {},
-      data: {},
-    };
-  },
-};
+```shell
+Create fungible token Test with symbol TST, 4 decimals and 1000 initial supply. Set supply key.
 ```
 
-### API Routes
-
-Backend endpoints:
-
-```typescript
-routes: [
-  {
-    name: "api-endpoint",
-    path: "/api/endpoint",
-    type: "GET",
-    handler: async (req, res) => {
-      res.json({ data: "response" });
-    },
-  },
-];
+```shell
+Create topic with memo 'Example Topic'.
 ```
 
-## Development Commands
-
-```bash
-# Start in development mode with hot reload
-bun run dev
-
-# Start in production mode
-bun run start
-
-# Build the plugin
-bun run build
-
-# Run tests
-bun test
-
-# Format code
-bun run format
+```shell
+Show messages for topic 0.0.1231234.
 ```
 
-## Testing
-
-ElizaOS employs a dual testing strategy:
-
-1. **Component Tests** (`src/__tests__/*.test.ts`)
-
-   - Run with Bun's native test runner
-   - Fast, isolated tests using mocks
-   - Perfect for TDD and component logic
-
-2. **E2E Tests** (`src/__tests__/e2e/*.e2e.ts`)
-   - Run with ElizaOS custom test runner
-   - Real runtime with actual database (PGLite)
-   - Test complete user scenarios
-
-### Test Structure
-
-```
-src/
-  __tests__/              # All tests live inside src
-    *.test.ts            # Component tests (use Bun test runner)
-    e2e/                 # E2E tests (use ElizaOS test runner)
-      plugin-hedera.e2e.ts  # E2E test suite
-      README.md          # E2E testing documentation
-  plugin.ts              # Export tests here: tests: [QuickStarterPluginTestSuite]
-```
-
-### Running Tests
-
-```bash
-# Run all tests (component + e2e)
-elizaos test
-
-# Component tests only
-elizaos test component
-# or
-bun test
-
-# E2E tests only
-elizaos test e2e
-```
-
-### Writing Component Tests
-
-```typescript
-import { describe, it, expect } from "bun:test";
-
-describe("My Plugin", () => {
-  it("should work correctly", () => {
-    expect(true).toBe(true);
-  });
-});
-```
-
-## Publishing
-
-1. Update `package.json` with your plugin details
-2. Build your plugin: `bun run build`
-3. Publish: `elizaos publish`
-
-## When to Use Quick Starter
-
-Use this template when you need:
-
-- ✅ Backend-only functionality
-- ✅ Simple API integrations
-- ✅ Lightweight plugins
-- ✅ Fast development cycles
-- ✅ Minimal dependencies
-
-Consider the full plugin-hedera if you need:
-
-- ❌ React frontend components
-- ❌ Complex UI interactions
-- ❌ E2E testing with Cypress
-- ❌ Frontend build pipeline
-
-## License
-
-This template is part of the ElizaOS project.
+As ElizaOS does not support human in the loop approach, the agent immediately executes all actions.
