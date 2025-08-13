@@ -11,7 +11,11 @@ export const HederaAccountDetails: Provider = {
     runtime: IAgentRuntime,
     _message: Memory,
     _state: State
-  ): Promise<{ text?: string; values?: Record<string, any>; data?: Record<string, any> }> {
+  ): Promise<{
+    text?: string;
+    values?: Record<string, any>;
+    data?: Record<string, any>;
+  }> {
     try {
       const address = runtime.getSetting("HEDERA_ACCOUNT_ID");
 
@@ -30,21 +34,20 @@ When user asks for "my Hedera Wallet Address", respond with: ${address}.
           hederaAccountId: address,
           operatorInfo: {
             accountId: address,
-            aliases: ["operator", "me", "myself", "I", "we"]
+            aliases: ["operator", "me", "myself", "I", "we"],
           },
           myInfo: {
             accountId: address,
-            aliases: ["me", "myself", "I", "we"]
-          }
-        }
+            aliases: ["me", "myself", "I", "we"],
+          },
+        },
       };
-
     } catch (error) {
       console.error("Error in Hedera operator details provider", error);
       return {
         text: "Unable to retrieve operator details",
         values: { error: true },
-        data: { error: error }
+        data: { error: error },
       };
     }
   },

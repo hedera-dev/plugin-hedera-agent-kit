@@ -1,19 +1,22 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync } from 'fs';
-import { join } from 'path';
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
 
 const testDependencies = {
-  '@elizaos/core': 'latest',
-  '@elizaos/test-utils': 'latest',
+  "@elizaos/core": "latest",
+  "@elizaos/test-utils": "latest",
 };
 
 function isInstalled(packageName) {
   try {
-    const packageJsonPath = join(process.cwd(), 'package.json');
+    const packageJsonPath = join(process.cwd(), "package.json");
     if (existsSync(packageJsonPath)) {
-      const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
-      const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
+      const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
+      const deps = {
+        ...packageJson.dependencies,
+        ...packageJson.devDependencies,
+      };
       return packageName in deps;
     }
   } catch (error) {
@@ -28,24 +31,24 @@ function installTestDependencies() {
     .map(([name, version]) => `${name}@${version}`);
 
   if (missingDeps.length === 0) {
-    console.log('✓ Test dependencies already installed');
+    console.log("✓ Test dependencies already installed");
     return;
   }
 
-  console.log('Installing test dependencies...');
+  console.log("Installing test dependencies...");
   try {
-    const proc = Bun.spawnSync(['bun', 'add', '-d', ...missingDeps], {
-      stdout: 'inherit',
-      stderr: 'inherit',
+    const proc = Bun.spawnSync(["bun", "add", "-d", ...missingDeps], {
+      stdout: "inherit",
+      stderr: "inherit",
       cwd: process.cwd(),
     });
 
     if (proc.exitCode !== 0) {
-      throw new Error('bun add command failed');
+      throw new Error("bun add command failed");
     }
-    console.log('✓ Test dependencies installed successfully');
+    console.log("✓ Test dependencies installed successfully");
   } catch (error) {
-    console.error('Failed to install test dependencies:', error.message);
+    console.error("Failed to install test dependencies:", error.message);
     process.exit(1);
   }
 }

@@ -89,8 +89,8 @@ Define agent capabilities:
 
 ```typescript
 const myAction: Action = {
-  name: 'MY_ACTION',
-  description: 'Description of what this action does',
+  name: "MY_ACTION",
+  description: "Description of what this action does",
   validate: async (runtime, message, state) => {
     // Validation logic
     return true;
@@ -108,7 +108,7 @@ Manage plugin state:
 
 ```typescript
 export class MyService extends Service {
-  static serviceType = 'my-service';
+  static serviceType = "my-service";
 
   async start() {
     // Initialize service
@@ -126,11 +126,11 @@ Supply contextual information:
 
 ```typescript
 const myProvider: Provider = {
-  name: 'MY_PROVIDER',
-  description: 'Provides contextual data',
+  name: "MY_PROVIDER",
+  description: "Provides contextual data",
   get: async (runtime, message, state) => {
     return {
-      text: 'Provider data',
+      text: "Provider data",
       values: {},
       data: {},
     };
@@ -145,11 +145,11 @@ Backend endpoints:
 ```typescript
 routes: [
   {
-    name: 'api-endpoint',
-    path: '/api/endpoint',
-    type: 'GET',
+    name: "api-endpoint",
+    path: "/api/endpoint",
+    type: "GET",
     handler: async (req, res) => {
-      res.json({ data: 'response' });
+      res.json({ data: "response" });
     },
   },
 ];
@@ -219,10 +219,10 @@ elizaos test e2e
 ### Writing Component Tests
 
 ```typescript
-import { describe, it, expect } from 'bun:test';
+import { describe, it, expect } from "bun:test";
 
-describe('My Plugin', () => {
-  it('should work correctly', () => {
+describe("My Plugin", () => {
+  it("should work correctly", () => {
     expect(true).toBe(true);
   });
 });
