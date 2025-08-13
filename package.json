@@ -1,7 +1,7 @@
 {
   "name": "plugin-hedera",
   "description": "ElizaOS plugin for Hedera blockchain",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -87,15 +87,15 @@
     "@langchain/core": "0.3.30"
   },
   "agentConfig": {
-    "pluginType": "elizaos:plugin:1.0.0",
+    "pluginType": "elizaos:plugin:3.0.0",
     "pluginParameters": {
       "HEDERA_ACCOUNT_ID": {
         "type": "string",
-        "description": "Id/address of Hedera account (0.X.XXXXXX)"
+        "description": "Id/address of Hedera account (ex. 0.X.XXXXXX)"
       },
       "HEDERA_PRIVATE_KEY": {
         "type": "string",
-        "description": "Private key for Hedera account"
+        "description": "Private key for Hedera account. Accepts ED25519 and ECDSA private keys both DER and HEX encoded"
       }
     }
   },
