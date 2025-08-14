@@ -85,7 +85,7 @@ Tools for querying Hedera network data:
 - **Get Topic Messages Query**: Retrieve messages from a specific consensus topic
 
 **Important:** The minimum required environment variables are:
-- `HEDERA_PRIVATE_KEY` - Your Hedera account private key (accepts ED25519 and ECDSA, both DER and HEX encoded)
+- `HEDERA_PRIVATE_KEY` - Your Hedera account private key (accepts DER encoded keys - both ED25519 and ECDSA)
 - `HEDERA_ACCOUNT_ID` - Your Hedera account ID (ex. `0.0.5393196`)
 - `OPENAI_API_KEY` - Required for natural language transaction processing
 
