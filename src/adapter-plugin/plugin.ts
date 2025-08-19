@@ -7,7 +7,7 @@ import {
   coreConsensusPlugin,
   coreHTSPlugin,
   coreQueriesPlugin,
-  ElizaOSAdapter,
+  HederaElizaOSToolkit,
 } from "hedera-agent-kit";
 import { Client } from "@hashgraph/sdk";
 import { HederaAccountDetails } from "./provider/hederaAccountDetails.ts";
@@ -58,10 +58,10 @@ const hederaPlugin: Plugin = {
       runtime.registerProvider(HederaAccountDetails);
 
       // Create the adapter and get actions
-      const adapter = new ElizaOSAdapter(client, configuration);
+      const toolkit = new HederaElizaOSToolkit({ client, configuration });
 
       // Register the actions in the runtime
-      const actions = adapter.getActions();
+      const actions = toolkit.getTools();
       if (Array.isArray(actions)) {
         actions.forEach((action) => runtime.registerAction(action));
       } else {
