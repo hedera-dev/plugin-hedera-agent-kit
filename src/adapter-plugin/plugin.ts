@@ -17,6 +17,14 @@ const configSchema = z.object({
   HEDERA_ACCOUNT_ID: z.string(),
 });
 
+const produceHederaClient = (
+  validatedConfig: z.infer<typeof configSchema>
+): Client => {
+  const accountId = String(validatedConfig.HEDERA_ACCOUNT_ID).trim();
+  const privateKey = String(validatedConfig.HEDERA_PRIVATE_KEY).trim();
+  return Client.forTestnet().setOperator(accountId, privateKey);
+};
+
 const hederaPlugin: Plugin = {
   name: "plugin-hedera",
   description: "Plugin for ElizaOS interactions with Hedera blockchain",
@@ -36,10 +44,7 @@ const hederaPlugin: Plugin = {
       }
 
       // Initialize Hedera client
-      const client = Client.forTestnet().setOperator(
-        runtime.getSetting("HEDERA_ACCOUNT_ID"),
-        runtime.getSetting("HEDERA_PRIVATE_KEY")
-      );
+      const client = produceHederaClient(validatedConfig);
 
       // Initialize configuration
       const configuration = {
