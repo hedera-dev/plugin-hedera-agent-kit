@@ -1,53 +1,103 @@
 {
-    "name": "@elizaos/plugin-hedera",
-    "version": "0.1.9-alpha.3",
-    "main": "dist/index.js",
-    "type": "module",
-    "types": "dist/index.d.ts",
-    "dependencies": {
-        "@elizaos/core": "0.25.6-alpha.1",
-        "@hashgraph/sdk": "^2.64.5",
-        "@hashgraphonline/standards-agent-kit": "^0.0.27",
-        "@hashgraphonline/standards-sdk": "^0.0.111",
-        "bignumber.js": "^9.1.2",
-        "dotenv": "^16.4.7",
-        "@hashgraphonline/hedera-agent-kit": "0.0.16",
-        "tsup": "8.5.0",
-        "zod": "^3.25.17"
-    },
-    "scripts": {
-        "build": "tsup --format esm --dts",
-        "dev": "tsup --format esm --dts --watch",
-        "postinstall": "pnpm run build",
-        "test": "vitest run"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.20.0",
-        "@typescript-eslint/eslint-plugin": "^8.24.0",
-        "@typescript-eslint/parser": "^8.24.0",
-        "eslint": "^9.20.1",
-        "eslint-config-prettier": "^10.0.1",
-        "prettier": "^3.5.0",
-        "typescript": "^5.7.3",
-        "vitest": "^3.0.7"
-    },
-    "agentConfig": {
-        "pluginType": "elizaos:plugin:0.1.9",
-        "pluginParameters": {
-            "HEDERA_PRIVATE_KEY": {
-                "type": "string",
-                "description": "Accepts ED25519 and ECDSA private keys both DER and HEX encoded"
-            },
-            "HEDERA_ACCOUNT_ID": {
-                "type": "string",
-                "description": "Example: 0.0.5392887"
-            },
-            "HEDERA_AGENT_MODE": {
-                "type": "string",
-                "description": "Example: 'provideBytes' or 'directExecution'",
-                "default": "provideBytes"
-            }
-        }
-    },
-    "packageManager": "pnpm@9.15.7+sha512.ed98f9c748442673c46964b70345bd2282c9b305e8eae539b34ab31d6ef24ef8dd59d8b55f27466f705500b009d9c113471cf87e544f3d5036b297330c26e996"
+  "name": "plugin-hedera",
+  "description": "ElizaOS plugin for Hedera blockchain",
+  "version": "3.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "packageType": "plugin",
+  "platform": "node",
+  "license": "UNLICENSED",
+  "author": "${GITHUB_USERNAME}",
+  "keywords": [
+    "plugin",
+    "elizaos",
+    "hedera",
+    "hedera-agent-kit"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "https://elizaos.ai",
+  "bugs": {
+    "url": "https://github.com/${GITHUB_USERNAME}/${PLUGINNAME}/issues"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    ".npmignore",
+    ".gitignore",
+    "package.json",
+    "tsup.config.ts"
+  ],
+  "dependencies": {
+    "@elizaos/core": "1.4.2",
+    "@elizaos/plugin-bootstrap": "1.4.2",
+    "@elizaos/plugin-ollama": "1.2.4",
+    "@elizaos/plugin-openai": "1.0.10",
+    "@hashgraph/sdk": "2.68.0",
+    "hedera-agent-kit": "file:./../hedera-agent-kit-v3/typescript",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@elizaos/cli": "latest",
+    "@eslint/js": "^9.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "dotenv": "16.4.5",
+    "prettier": "3.5.3",
+    "tsup": "8.5.0",
+    "typescript": "5.8.2"
+  },
+  "scripts": {
+    "start": "elizaos start",
+    "dev": "elizaos dev",
+    "build": "tsc --noEmit && tsup",
+    "postinstall": "node -e \"const fs=require('fs');const path=require('path');const zodPath=path.join('node_modules','zod');if(fs.existsSync(zodPath)){fs.writeFileSync(path.join(zodPath,'v3.js'),'module.exports=require(\\\"./lib/index.js\\\");');fs.writeFileSync(path.join(zodPath,'v3.d.ts'),'export * from \\\"./lib/index\\\";');}\" || true",
+    "test": "bun test",
+    "format": "prettier --write ./src",
+    "prettify": "prettier --check .",
+    "prettify:fix": "prettier --write .",
+    "lint": "eslint . --ext .ts,.js,.mjs",
+    "lint:fix": "eslint . --ext .ts,.js,.mjs --fix"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "resolutions": {
+    "// Note": "langchain 0.3.30 fixes @langchain/core zod/v3 import issues",
+    "zod": "^3.24.4",
+    "langchain": "0.3.30",
+    "@langchain/core": "0.3.30"
+  },
+  "overrides": {
+    "@langchain/core": "0.3.30"
+  },
+  "agentConfig": {
+    "pluginType": "elizaos:plugin:3.0.0",
+    "pluginParameters": {
+      "HEDERA_ACCOUNT_ID": {
+        "type": "string",
+        "description": "Id/address of Hedera account (ex. 0.X.XXXXXX)"
+      },
+      "HEDERA_PRIVATE_KEY": {
+        "type": "string",
+        "description": "Private key for Hedera account. Accepts ED25519 and ECDSA private keys both DER and HEX encoded"
+      }
+    }
+  },
+  "gitHead": "d5bd5c43bfebeb7ac02f9e029f924cb6cd5c2ec7"
 }

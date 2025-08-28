@@ -4,6 +4,7 @@
 # ignore lock files
 **/*-lock.yaml
 package-lock.json
+bun.lock
 dev-dist
 
 **/CHANGELOG.md
