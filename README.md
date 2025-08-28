@@ -1,4 +1,4 @@
-# Hedera + ElizaOS: Hedera Agent Kit Plugin
+# @elizaos-plugins/plugin-hedera
 
 A high‑level integration that lets AI agents built with ElizaOS understand, reason about, and execute on‑chain actions on the Hedera network using natural language.
 
