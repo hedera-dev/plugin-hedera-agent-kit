@@ -8,8 +8,8 @@
   "types": "dist/index.d.ts",
   "packageType": "plugin",
   "platform": "node",
-  "license": "UNLICENSED",
-  "author": "${GITHUB_USERNAME}",
+  "license": "MIT",
+  "author": "Hashgraph Team",
   "keywords": [
     "plugin",
     "elizaos",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://elizaos.ai",
   "bugs": {
-    "url": "https://github.com/${GITHUB_USERNAME}/${PLUGINNAME}/issues"
+    "url": "https://github.com/elizaos-plugins/plugin-hedera/issues"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -47,7 +47,7 @@
     "@elizaos/plugin-ollama": "1.2.4",
     "@elizaos/plugin-openai": "1.0.10",
     "@hashgraph/sdk": "2.68.0",
-    "hedera-agent-kit": "file:./../hedera-agent-kit-v3/typescript",
+    "hedera-agent-kit": "3.2.0",
     "zod": "^3.24.4"
   },
   "devDependencies": {
@@ -98,6 +98,5 @@
         "description": "Private key for Hedera account. Accepts ED25519 and ECDSA private keys both DER and HEX encoded"
       }
     }
-  },
-  "gitHead": "d5bd5c43bfebeb7ac02f9e029f924cb6cd5c2ec7"
+  }
 }

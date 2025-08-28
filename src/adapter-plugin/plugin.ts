@@ -5,8 +5,11 @@ import {
   AgentMode,
   coreAccountPlugin,
   coreConsensusPlugin,
-  coreHTSPlugin,
-  coreQueriesPlugin,
+  coreTokenPlugin,
+  coreTokenQueryPlugin,
+  coreAccountQueryPlugin,
+  coreConsensusQueryPlugin,
+  coreEVMPlugin,
   HederaElizaOSToolkit,
 } from "hedera-agent-kit";
 import { Client } from "@hashgraph/sdk";
@@ -49,10 +52,13 @@ const hederaPlugin: Plugin = {
       // Initialize configuration
       const configuration = {
         plugins: [
-          coreHTSPlugin,
-          coreQueriesPlugin,
+          coreTokenPlugin,
+          coreTokenQueryPlugin,
+          coreAccountQueryPlugin,
+          coreConsensusQueryPlugin,
           coreAccountPlugin,
           coreConsensusPlugin,
+          coreEVMPlugin,
         ],
         context: {
           mode: AgentMode.AUTONOMOUS,
