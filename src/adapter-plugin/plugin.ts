@@ -10,8 +10,9 @@ import {
   coreAccountQueryPlugin,
   coreConsensusQueryPlugin,
   coreEVMPlugin,
-  HederaElizaOSToolkit,
+  Configuration,
 } from "hedera-agent-kit";
+import { HederaElizaOSToolkit } from "hedera-agent-kit/elizaos";
 import { Client } from "@hashgraph/sdk";
 import { HederaAccountDetails } from "./provider/hederaAccountDetails.ts";
 
@@ -50,7 +51,7 @@ const hederaPlugin: Plugin = {
       const client = produceHederaClient(validatedConfig);
 
       // Initialize configuration
-      const configuration = {
+      const configuration: Configuration = {
         plugins: [
           coreTokenPlugin,
           coreTokenQueryPlugin,

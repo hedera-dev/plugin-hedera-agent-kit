@@ -42,22 +42,23 @@
     "tsup.config.ts"
   ],
   "dependencies": {
-    "@elizaos/core": "1.4.2",
-    "@elizaos/plugin-bootstrap": "1.4.2",
+    "@elizaos/core": "1.7.0",
+    "@elizaos/plugin-bootstrap": "1.7.0",
     "@elizaos/plugin-ollama": "1.2.4",
-    "@elizaos/plugin-openai": "1.0.10",
+    "@elizaos/plugin-openai": "1.6.0",
     "@hashgraph/sdk": "2.68.0",
-    "hedera-agent-kit": "3.2.0",
+    "hedera-agent-kit": "3.6.0",
     "zod": "^3.24.4"
   },
   "devDependencies": {
-    "@elizaos/cli": "latest",
+    "@elizaos/cli": "1.7.0",
+    "@elizaos/test-utils": "^1.7.0",
     "@eslint/js": "^9.20.0",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
+    "dotenv": "16.4.5",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
-    "dotenv": "16.4.5",
     "prettier": "3.5.3",
     "tsup": "8.5.0",
     "typescript": "5.8.2"
@@ -66,7 +67,6 @@
     "start": "elizaos start",
     "dev": "elizaos dev",
     "build": "tsc --noEmit && tsup",
-    "postinstall": "node -e \"const fs=require('fs');const path=require('path');const zodPath=path.join('node_modules','zod');if(fs.existsSync(zodPath)){fs.writeFileSync(path.join(zodPath,'v3.js'),'module.exports=require(\\\"./lib/index.js\\\");');fs.writeFileSync(path.join(zodPath,'v3.d.ts'),'export * from \\\"./lib/index\\\";');}\" || true",
     "test": "bun test",
     "format": "prettier --write ./src",
     "prettify": "prettier --check .",
@@ -76,15 +76,6 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "resolutions": {
-    "// Note": "langchain 0.3.30 fixes @langchain/core zod/v3 import issues",
-    "zod": "^3.24.4",
-    "langchain": "0.3.30",
-    "@langchain/core": "0.3.30"
-  },
-  "overrides": {
-    "@langchain/core": "0.3.30"
   },
   "agentConfig": {
     "pluginType": "elizaos:plugin:3.0.0",
